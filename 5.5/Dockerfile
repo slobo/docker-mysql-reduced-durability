@@ -1,5 +1,5 @@
 FROM azukiapp/ubuntu
-MAINTAINER Azuki <support@azukiapp.com>
+MAINTAINER Slobodan Miskovic <slobodan@miskovic.ca>
 
 ENV MYSQL_VERSION 5.5
 
@@ -13,8 +13,7 @@ RUN  apt-get update \
   && rm /etc/mysql/conf.d/mysqld_safe_syslog.cnf
 
 # Add MySQL configuration
-ADD my.cnf /etc/mysql/conf.d/my.cnf
-ADD mysqld_charset.cnf /etc/mysql/conf.d/mysqld_charset.cnf
+ADD etc /etc
 
 # Add MySQL scripts
 ADD import_sql.sh /import_sql.sh

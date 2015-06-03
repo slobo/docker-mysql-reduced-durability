@@ -1,0 +1,18 @@
+# Trade durability for performance
+# Ripped from http://www.tocker.ca/2013/11/04/reducing-mysql-durability-for-testing.html
+
+[mysqld]
+# This makes any DDL (schema changes) unsafe, but removes an fsync that is required to make sure the changes are safely on disk.
+sync_frm=0
+
+# This reduces redo log file pressure as data is committed. I would rate this as one of the most important settings to change. The particular case when it will help the most is when you are running on hardware without a battery backed write cache.
+innodb-flush-log-at-trx-commit=0
+
+# This makes recovery unsafe, as InnoDB will not be able to recover from a partially written page. However, as with all these steps, we are working with the assumption that you will just throw out the data when that happens.
+innodb-doublewrite=0
+
+# Page checksums are InnoDB's mechanism to make sure the underlying hardware isn't failing and corrupting data. It's usually only a small hit (although more measurable with SSDs), and is only used on loading/unloading pages from disk.
+innodb-checksums=0
+
+# This makes sure changes between the binary logs and synchronized. Since we don't care about recoverability, we can disable it.
+innodb_support_xa=0
